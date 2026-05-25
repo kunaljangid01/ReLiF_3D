@@ -325,9 +325,9 @@ Please visit the project page for paper, visualizations, and updates:
 ---
 
 ## 📝 Citation
-The official citation will be updated after the MICCAI proceedings are available.
 
-<!-- If you find this work useful, please cite:
+
+If you find this work useful, please cite:
 
 ```bibtex
 @inproceedings{jangid2026relif3d,
@@ -337,8 +337,8 @@ The official citation will be updated after the MICCAI proceedings are available
   booktitle = {Proceedings of MICCAI},
   year      = {2026}
 }
-``` -->
-
+```
+The official citation will be updated after the MICCAI proceedings are available.
 ---
 
 ## Acknowledgements
@@ -362,7 +362,7 @@ This repository is released for research and educational purposes. Please check 
 
 ## Contact
 
-For questions, please open an issue or contact:
+For questions, issues, or collaboration inquiries, please feel free to contact:
 
 ```text
 kunal24@iiserb.ac.in, jangidkunal1999@gmail.com
