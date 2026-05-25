@@ -16,6 +16,46 @@ Official implementation of **ReLiF-3D**, ***early accepted*** at **MICCAI 2026**
 - **Code:** https://github.com/kunaljangid01/ReLiF_3D
 
 
+<<<<<<< HEAD
+=======
+## 📥 Download - Trained Weights and Data
+
+The trained weights and processed data used in the paper are hosted on Google Drive.
+
+| Item | Description | Link |
+|---|---|---|
+| ReLiF-3D trained weights | Checkpoints for BraTS 2019 and LA under 1, 2, 3, and 5 labeled-volume settings | **[Download weights](https://drive.google.com/drive/folders/1WJ5Oxb8uXe79kS24rq10Cjq4QCJxBpNR?usp=sharing)** |
+| Processed datasets / splits | Preprocessed BraTS 2019 and Left Atrium data organization, labeled/unlabeled splits, and test lists used for reproduction | **[Download data/splits](https://drive.google.com/drive/folders/1ENrN8Ew2dyhH1KJ5CTcb9aBz-inyDzC7?usp=sharing)** |
+| Project page | Paper, figures, updates, and additional resources | **[Project Page](https://visdomlab.github.io/ReLiF_3D/)** |
+
+Each checkpoint directory should contain the trained model file and any log/config files required by the testing scripts.
+
+After downloading, organize the files as:
+
+```bash
+ReLiF-3D/
+├── data/
+│   ├── BraTS19/
+│   └── 2018LA_Seg_Training_Set/
+├── output/
+│   └── ReLiF_3D/
+│       ├── BraTS/
+│       │   ├── ReLiF_3D_1/
+│       │   ├── ReLiF_3D_2/
+│       │   ├── ReLiF_3D_3/
+│       │   └── ReLiF_3D_5/
+│       └── LA/
+│           ├── ReLiF_3D_1/
+│           ├── ReLiF_3D_2/
+│           ├── ReLiF_3D_3/
+│           └── ReLiF_3D_5/
+└── ckpt/
+    └── sam_med3d.pth
+```
+
+> **Note:** Please ensure that dataset use follows the license and access terms of the original BraTS 2019 and Left Atrium datasets. Only processed data are available in drive. Users download the raw datasets from their official sources and place them in the paths shown above.
+
+>>>>>>> fa4474e0e0823deeea0fe53bdd4b6abbd1c03530
 
 ## 🔥 Highlights
 
@@ -29,10 +69,13 @@ Official implementation of **ReLiF-3D**, ***early accepted*** at **MICCAI 2026**
 ---
 
 ## 🧠 Framework Overview
+<<<<<<< HEAD
 
 <p align="center">
   <img src="assets/ReLiF_3D.png" width="85%" alt="ReLiF-3D framework overview">
 </p>
+=======
+>>>>>>> fa4474e0e0823deeea0fe53bdd4b6abbd1c03530
 
 ReLiF-3D contains two branches during training:
 
@@ -44,6 +87,29 @@ During inference, **only the 3D U-Net is used**. SAM-Med3D is not required at de
 ---
 
 
+<<<<<<< HEAD
+=======
+```bash
+ReLiF-3D/
+├── code/                         # Training/testing scripts
+│   ├── train_relif3d.py           # Main ReLiF-3D training script
+│   ├── test_relif3d.py            # Inference/evaluation script
+│   ├── networks/                  # 3D U-Net and model definitions
+│   ├── dataloaders/               # Dataset loaders and preprocessing
+│   └── utils/                     # Losses, metrics utilities
+├── ckpt/                          # Pretrained foundation/checkpoint weights
+│   └── sam_med3d.pth              # SAM-Med3D checkpoint
+├── data/                          # Dataset directory
+│   ├── BraTS2019/
+│   └── LA/
+├── outputs/                       # Saved predictions and logs
+├── README.md
+└── requirements.txt
+```
+
+---
+
+>>>>>>> fa4474e0e0823deeea0fe53bdd4b6abbd1c03530
 ## 📦 Requirements
 
 The implementation is based on PyTorch and CUDA. Experiments in the paper were conducted using a single high-memory GPU.
