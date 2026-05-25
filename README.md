@@ -1,10 +1,15 @@
 # ReLiF-3D: Prior-Guided Semi-Supervised 3D MRI Segmentation via Robust Bias-Consistent Paired Views
 
 [![MICCAI 2026](https://img.shields.io/badge/MICCAI-2026-blue)](https://conferences.miccai.org/2026/en/)
+[![Early Accept](https://img.shields.io/badge/MICCAI%202026-Early%20Accept-gold)](https://conferences.miccai.org/2026/en/)
 [![Project Page](https://img.shields.io/badge/Project-Page-green)](https://visdomlab.github.io/ReLiF_3D/)
 [![License](https://img.shields.io/badge/License-Research%20Only-lightgrey)](#license)
 
-Official implementation of **ReLiF-3D**, ***early accepted*** at **MICCAI 2026**.
+Official implementation of **ReLiF-3D**, 🏆 **Early Accepted at MICCAI 2026**.
+
+<p align="center">
+  <img src="assets/ReLiF_3D.png" width="85%" alt="ReLiF-3D framework overview">
+</p>
 
 
 ## 👀 Introduction
@@ -24,10 +29,6 @@ Official implementation of **ReLiF-3D**, ***early accepted*** at **MICCAI 2026**
 ---
 
 ## 🧠 Framework Overview
-
-<p align="center">
-  <img src="assets/ReLiF_3D.png" width="85%" alt="ReLiF-3D framework overview">
-</p>
 
 ReLiF-3D contains two branches during training:
 
@@ -123,7 +124,7 @@ ReLiF_3D/
 │   └── sam_med3d.pth              # SAM-Med3D checkpoint
 ├── data/                          # Dataset directory
 │   ├── BraTS2019/
-│   └── LA/
+│   └── 2018LA_Seg_Training_Set/
 ├── outputs/                       # Saved predictions and logs
 ├── README.md
 └── requirements.txt
@@ -154,7 +155,7 @@ ckpt/sam_med3d.pth
 
 ### BraTS 2019
 
-We use the **FLAIR** modality and segment the **whole tumor (WT)** region. The preprocessed data or split files used in the paper can be downloaded from the Google Drive [link](https://drive.google.com/drive/folders/1WJ5Oxb8uXe79kS24rq10Cjq4QCJxBpNR?usp=sharing)  above and should be placed under:
+We use the **FLAIR** modality and segment the **whole tumor (WT)** region. The preprocessed data or split files used in the paper can be downloaded from the Google Drive link  above and should be placed under:
 
 ```bash
 data/BraTS19/
@@ -199,7 +200,7 @@ ReLiF-3D is trained under extremely low-label settings with:
 
 ```text
 - S ∈ {1, 2, 3, 5} labeled volumes
- remaining training volumes used as unlabeled data
+- Remaining training volumes used as unlabeled data
 - input crop size: 128 × 128 × 128
 - batch size: 2
 - maximum iterations: 30000
@@ -243,7 +244,7 @@ python ReLiF_3D_train_la.py \
 ## 🔍 Inference
 
 
-During inference, only the trained 3D U-Net is used. To evaluate the released checkpoints, first download the trained weights from Google Drive and place them under the `output/` directory.
+During inference, only the trained 3D U-Net is used. To evaluate the released checkpoints, first download the trained weights from Google Drive [link](https://drive.google.com/drive/folders/1WJ5Oxb8uXe79kS24rq10Cjq4QCJxBpNR?usp=sharing) and place them under the `output/` directory.
 
 ```bash
 cd code
@@ -324,17 +325,19 @@ Please visit the project page for paper, visualizations, and updates:
 ---
 
 ## 📝 Citation
+The official citation will be updated after the MICCAI proceedings are available.
 
-If you find this work useful, please cite:
+<!-- If you find this work useful, please cite:
 
 ```bibtex
-@inproceedings{relif3d2026,
-  title     = {ReLiF-3D: Prior-Guided Semi-Supervised 3D MRI Segmentation via Robust Bias-Consistent Paired Views},
-  author    = {<Author List>},
-  booktitle = {International Conference on Medical Image Computing and Computer-Assisted Intervention (MICCAI)},
+@inproceedings{jangid2026relif3d,
+  title     = {ReLiF-3D: Prior-Guided Semi-Supervised 3D MRI Segmentation
+               via Robust Bias-Consistent Paired Views},
+  author    = {Jangid, Kunal and Basu, Tanmay and Kurmi, Vinod},
+  booktitle = {Proceedings of MICCAI},
   year      = {2026}
 }
-```
+``` -->
 
 ---
 
