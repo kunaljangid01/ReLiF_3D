@@ -81,10 +81,10 @@ parser.add_argument('--contrast_T', type=float, default=0.2, help='temperature f
 parser.add_argument('--contrast_warmup', type=int, default=2000, help='iters to ramp contrast weight 0->max')
 parser.add_argument('--contrast_on', type=int, default=1, help='enable (1) or disable (0) contrastive term')
 
-parser.add_argument('--soct_on', type=int, default=1)
-parser.add_argument('--soct_t0', type=float, default=0.90)  # start conf thr (strict)
-parser.add_argument('--soct_t1', type=float, default=0.70)  # end conf thr (looser)
-parser.add_argument('--soct_w',  type=float, default=1.0)   # global weight for gated terms
+parser.add_argument('--cgcr_on', type=int, default=1)
+parser.add_argument('--cgcr_t0', type=float, default=0.90)  # start conf thr (strict)
+parser.add_argument('--cgcr_t1', type=float, default=0.70)  # end conf thr (looser)
+parser.add_argument('--cgcr_w',  type=float, default=1.0)   # global weight for gated terms
 
 
 
@@ -323,7 +323,7 @@ def train(args, snapshot_path):
             labeled_label_batch = label_batch[:args.labeled_bs]
 
 
-            volume_batch_fft = sobf_augment(
+            volume_batch_sobf = sobf_augment(
                 volume_batch,
                 iter_num=iter_num,
                 max_iter=args.max_iterations,
@@ -334,7 +334,7 @@ def train(args, snapshot_path):
             )
 
             
-            outputs_convent = model_label_convent(volume_batch_fft)
+            outputs_convent = model_label_convent(volume_batch_sobf)
             outputs_convent_soft = torch.softmax(outputs_convent, dim=1)
             
             outputs_convent_clean = model_label_convent(volume_batch)
@@ -342,18 +342,18 @@ def train(args, snapshot_path):
             
             
 
-            soct_mask = None
-            if args.soct_on:
+            cgcr_mask = None
+            if args.cgcr_on:
                 # per-voxel confidence of each teacher
                 conf_clean, idx_clean = outputs_convent_clean_soft.max(dim=1, keepdim=True)  # [B,1,D,H,W]
                 conf_freq,  idx_freq  = outputs_convent_soft.max(dim=1, keepdim=True)       # [B,1,D,H,W]
 
                 agree = (idx_clean == idx_freq).float()                                      # [B,1,D,H,W]
 
-                thr = _lin_sched(iter_num, args.max_iterations, args.soct_t0, args.soct_t1)  # scalar
+                thr = _lin_sched(iter_num, args.max_iterations, args.cgcr_t0, args.cgcr_t1)  # scalar
                 confident = (conf_clean >= thr).float() * (conf_freq >= thr).float()         # [B,1,D,H,W]
 
-                soct_mask = (agree * confident).detach()                                     # [B,1,D,H,W]
+                cgcr_mask = (agree * confident).detach()                                     # [B,1,D,H,W]
 
 
             
@@ -391,16 +391,16 @@ def train(args, snapshot_path):
             consistency_loss = F.kl_div(Q_t.log(), P_t, reduction='mean')
 
             
-            if args.soct_on and soct_mask is not None and (volume_batch.size(0) - args.labeled_bs) > 0:
-                U_m = soct_mask[args.labeled_bs:]  # [U,1,D,H,W]
+            if args.cgcr_on and cgcr_mask is not None and (volume_batch.size(0) - args.labeled_bs) > 0:
+                U_m = cgcr_mask[args.labeled_bs:]  # [U,1,D,H,W]
                 diff = (outputs_convent_clean_soft[args.labeled_bs:] - outputs_convent_soft[args.labeled_bs:])**2  # [U,2,D,H,W]
                 diff = diff.sum(dim=1, keepdim=True)  # per-voxel scalar [U,1,D,H,W]
                 unsup_l = (diff * U_m).sum() / (U_m.sum() + 1e-6)
 
 
 
-            # === LAPOC START: lesion-aware positive-only contrast ===
-            lapoc_loss = torch.tensor(0.0, device=volume_batch.device)
+            # === LARC START: lesion-aware positive-only contrast ===
+            larc_loss = torch.tensor(0.0, device=volume_batch.device)
 
             if args.contrast_on:
                 assert len(_feature_buf) >= 2, "Feature hook buffer underflow; ensure both forwards ran."
@@ -432,21 +432,21 @@ def train(args, snapshot_path):
 
 
                         cos_sim = F.cosine_similarity(zf, zc.detach(), dim=1)  # [U']
-                        lapoc_loss = (1.0 - cos_sim).mean()
+                        larc_loss = (1.0 - cos_sim).mean()
                     else:
-                        lapoc_loss = torch.tensor(0.0, device=volume_batch.device)
+                        larc_loss = torch.tensor(0.0, device=volume_batch.device)
 
             
-            if iter_num < 1000: lapoc_loss = 0
+            if iter_num < 1000: larc_loss = 0
             
             contrast_w = args.contrast * min(1.0, float(iter_num) / max(1, args.contrast_warmup))
 
             loss = (supervised_loss
-                    + consistency_weight * (args.soct_w * consistency_loss if args.soct_on else consistency_loss)
-                    + (args.soct_w * unsup_l if args.soct_on else unsup_l)
-                    + contrast_w * lapoc_loss)
+                    + consistency_weight * (args.cgcr_w * consistency_loss if args.cgcr_on else consistency_loss)
+                    + (args.cgcr_w * unsup_l if args.cgcr_on else unsup_l)
+                    + contrast_w * larc_loss)
 
-            # === LAPOC END ===
+            # === LARC END ===
 
 
 
@@ -472,7 +472,7 @@ def train(args, snapshot_path):
             writer.add_scalar('info/consistency_weight',
                               consistency_weight, iter_num)
             # ===   ===
-            writer.add_scalar('contrast/lapoc_loss', float(lapoc_loss), iter_num)
+            writer.add_scalar('contrast/larc_loss', float(larc_loss), iter_num)
             writer.add_scalar('contrast/weight', float(contrast_w), iter_num)
             # ===   ===
 
