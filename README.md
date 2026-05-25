@@ -154,7 +154,7 @@ ckpt/sam_med3d.pth
 
 ### BraTS 2019
 
-We use the **FLAIR** modality and segment the **whole tumor (WT)** region. The preprocessed data or split files used in the paper can be downloaded from the Google Drive link above and should be placed under:
+We use the **FLAIR** modality and segment the **whole tumor (WT)** region. The preprocessed data or split files used in the paper can be downloaded from the Google Drive [link](https://drive.google.com/drive/folders/1WJ5Oxb8uXe79kS24rq10Cjq4QCJxBpNR?usp=sharing)  above and should be placed under:
 
 ```bash
 data/BraTS19/
@@ -198,15 +198,15 @@ If you use the provided split files, keep the labeled-volume setting consistent 
 ReLiF-3D is trained under extremely low-label settings with:
 
 ```text
-S ∈ {1, 2, 3, 5} labeled volumes
-remaining training volumes used as unlabeled data
-input crop size: 128 × 128 × 128
-batch size: 2
-maximum iterations: 30000
-optimizer: SGD
-learning rate: 0.01
-weight decay: 1e-4
-momentum: 0.9
+- S ∈ {1, 2, 3, 5} labeled volumes
+ remaining training volumes used as unlabeled data
+- input crop size: 128 × 128 × 128
+- batch size: 2
+- maximum iterations: 30000
+- optimizer: SGD
+- learning rate: 0.01
+- weight decay: 1e-4
+- momentum: 0.9
 ```
 
 ### Example: BraTS 2019
@@ -243,7 +243,7 @@ python ReLiF_3D_train_la.py \
 ## 🔍 Inference
 
 
-During inference, only the trained 3D U-Net is used. To evaluate the released checkpoints, first download the trained weights from Google Drive and place them under the corresponding `output/ReLiF_3D/` subdirectory.
+During inference, only the trained 3D U-Net is used. To evaluate the released checkpoints, first download the trained weights from Google Drive and place them under the `output/` directory.
 
 ```bash
 cd code
@@ -281,14 +281,14 @@ We report:
 Default parameters used in the paper:
 
 ```text
-k_m = 41
-k_a = 21
-alpha_m,max = 0.25
-alpha_a,max = 0.12
-tau = 2
-gamma = 1.5
-lambda_larc = 0.08
-T_warmup = 2000
+- k_m = 41
+- k_a = 21
+- alpha_m,max = 0.25
+- alpha_a,max = 0.12
+- tau = 2
+- gamma = 1.5
+- lambda_larc = 0.08
+- T_warmup = 2000
 ```
 
 ---
