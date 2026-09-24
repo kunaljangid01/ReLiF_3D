@@ -330,15 +330,18 @@ Please visit the project page for paper, visualizations, and updates:
 If you find this work useful, please cite:
 
 ```bibtex
-@inproceedings{jangid2026relif3d,
-  title     = {ReLiF-3D: Prior-Guided Semi-Supervised 3D MRI Segmentation
-               via Robust Bias-Consistent Paired Views},
-  author    = {Jangid, Kunal and Basu, Tanmay and Kurmi, Vinod},
-  booktitle = {Proceedings of MICCAI},
-  year      = {2026}
+@InProceedings{JanKun_ReLiF3D_MICCAI2026,
+        author = { Jangid, Kunal AND Basu, Tanmay AND Kurmi, Vinod},
+        title = { { ReLiF-3D: Prior-Guided Semi-supervised 3D MRI Segmentation via Robust Bias-Consistent Paired Views } },
+        booktitle = {Medical Image Computing and Computer Assisted Intervention -- MICCAI 2026},
+        year = {2026},
+        publisher = {Springer Nature Switzerland},
+        volume = {LNCS 16880},
+        month = {September},
+        page = {pending}
 }
+
 ```
-The official citation will be updated after the MICCAI proceedings are available.
 ---
 
 ## Acknowledgements
